@@ -3,16 +3,24 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Namste from dashboardddddddd");
+// app.use("/user", (req, res) => {
+//   res.send("HAHAHAHA......");
+// });
+
+app.get("/user", (req, res) => {
+  res.send({
+    firstName: "Akshay",
+    lastName: "Saini",
+  });
 });
 
-app.use("/test", (req, res) => {
-  res.send("Hello from the server111111222222");
+app.post("/user", (req, res) => {
+  console.log("data is saved sucessfully");
+  res.send("data is saved sucessfully to the Database");
 });
 
-app.use("/hello", (req, res) => {
-  res.send("Hello hellooo");
+app.delete("/user", (req, res) => {
+  res.send("Data is deleted scuccesfuly");
 });
 
 app.listen(7777, () => {
