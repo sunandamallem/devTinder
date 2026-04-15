@@ -1,31 +1,31 @@
 //creation of server
 
 const express = require("express");
+const connectDB = require("./config/databse");
 const app = express();
-const { adminAuth, userAuth } = require("./middleswares/auth");
-//handle auth middleware for all requests GET,POST,DELTE,PUT,PATCH
+const User = require("./models/user");
 
-app.use("/admin", adminAuth);
-app.use("/user", userAuth);
+app.post("/signup", async (req, res) => {
+  const userObj = {
+    firstName: "Akshay Saini",
+    lastName: "Saini",
+    emailId: "akshay@saini.com",
+    password: "akshay@123",
+  };
 
-app.post("/user/login", (req, res) => {
-  console.log("login");
-  res.send("user loggedin successfully");
+  const user = new User(userObj);
+  console.log(user);
+  await user.save();
+  res.send("User added successfully");
 });
 
-app.get("/user/data", userAuth, (req, res, next) => {
-  console.log("user data is sent");
-  res.send("User Data is sent");
-});
-
-app.get("/admin/getAllData", (req, res) => {
-  res.send("All Data sent");
-});
-
-app.get("/admin/deleteUser", (req, res) => {
-  res.send("Data is deleted");
-});
-
-app.listen(7777, () => {
-  console.log("server is successfuly listening on port 7777");
-});
+connectDB()
+  .then(() => {
+    console.log("databse connection is extablished");
+    app.listen(7777, () => {
+      console.log("server is successfuly listening on port 7777");
+    });
+  })
+  .catch((err) => {
+    console.error("databse cannot be connected");
+  });
